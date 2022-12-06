@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<body onload="draw()">
+
+    <img id="background" hidden="true" src="background.png">
+    <div>
+    <canvas id="myCanvas"  style="border:1px solid hsl(0, 0%, 83%);">
+        Your browser does not support the HTML canvas tag.</canvas>
+    </div>
+	<script src="https://www.gstatic.com/firebasejs/5.5.1/firebase.js"></script>
+	<script src="./confetti.js"></script>
+
+    <script>
+        const firebaseConfig = {
+        apiKey: "AIzaSyC3-2edhHJn6XtIu0U_uVQeOJO8yJ2eLrw",
+        authDomain: "mcmillon-ox-project.firebaseapp.com",
+        databaseURL: "https://mcmillon-ox-project-default-rtdb.firebaseio.com",
+        projectId: "mcmillon-ox-project",
+        storageBucket: "mcmillon-ox-project.appspot.com",
+        messagingSenderId: "617519447511",
+        appId: "1:617519447511:web:19e25e3ed9f3f38e3b5f92",
+        measurementId: "G-2HYE3YYSY2"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const imgWidth = 500;
+        const imgHeight = 500;
+        const canvasWidth = 1000;
+        const canvasHeight = 150;
+        const canvas = document.getElementById("myCanvas");
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight
+        let checked_in = 0;
+
+
+        const dbRef = firebase.database().ref('/nwa-food-bank/mcmillon/users');
+    
+        dbRef.on('value', snap => {
+            console.log(snap.val());
+            checked_in = snap.val().checked_in
+            draw();
+        })
+
+        function draw() {
+
+            var c = document.getElementById("myCanvas");
+            var ctx = c.getContext("2d");
+            var background = document.getElementById("background");
+
+            ctx.font = "30px Arial";
+            ctx.drawImage(background, 0, 0, canvasWidth, canvasHeight);
+
+            ctx.fillText(checked_in, canvasWidth - 140, 110);
+
+        }
+    </script>
+    <style>
+        canvas {
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+    </style>
+</body>
+</html>
